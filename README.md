@@ -1,10 +1,10 @@
-accidentially and not familar with github pull/merge request, original author perhaps blocked my git account and no longer able to comment and/or ask help/qeistion, perhaps get matt with. 
+accidentially and not familar with github pull/merge request, original author perhaps blocked my git account and no longer able to comment and/or ask help/question, perhaps get matt with. 
 
-you may still be able to visit original repo and looking for update.
+you may still be able to visit original repo and looking for update or help/discussion.
 
-this library (update & latest to version 1.1.5) has no support email header build with "in-reply-to" & "references." so far
+### this library (update & latest to version 1.1.5) has no support email header build with "in-reply-to" & "references." so far
 
-SD_MMC is not working, why ?
+### SD_MMC is not working, why ?
 
 ![SD_MMC_not_supported.JPG](SD_MMC_not_supported.JPG)  
 
@@ -56,7 +56,65 @@ bool ESP_Mail_Client::sdBegin(void)
 
 
 
+### workaround, change code design,
+ESP_Mail_Client.cpp, omits/add following,
+```
+/*
+// xiaolaba
+bool ESP_Mail_Client::sdBegin(uint8_t sck, uint8_t miso, uint8_t mosi, uint8_t ss)
+{
+  _sck = sck;
+  _miso = miso;
+  _mosi = mosi;
+  _ss = ss;
+  _sdConfigSet = true;
+#if defined(ESP32)
+  SPI.begin(_sck, _miso, _mosi, _ss);   // only support SPI mode for SD CARD, no SD_MMC
+  return ESP_MAIL_SD_FS.begin(_ss, SPI);
+#elif defined(ESP8266)
+  return ESP_MAIL_SD_FS.begin(_ss);
+#endif
+}
+*/
 
+
+// add code following,
+bool ESP_Mail_Client::sdTest()
+{
+
+  if (_sdConfigSet)
+//    sdBegin(_sck, _miso, _mosi, _ss);	//xiaolaba
+    sdmmcBegin(); //xiaolaba
+...
+
+
+
+
+```
+
+
+ESP_Mail_Client.h, omits/add following,   
+```
+//  bool sdBegin(uint8_t sck, uint8_t miso, uint8_t mosi, uint8_t ss);	// xiaolaba
+
+
+
+//add code following,
+  //xiaolaba
+  /** Initialize the SD card with SD_MMC
+   * 
+   * @return The boolean value which indicates the success of operation.
+  */
+  bool sdmmcBegin(void);
+
+```
+
+ESP_Mail_FS.h
+```
+//define ESP_Mail_DEFAULT_SD_FS SD	// SPI mode SD card, works.
+#include <SD_MMC.h>
+#define ESP_Mail_DEFAULT_SD_FS SD_MMC //For ESP32 SDMMC, testing, not working, no code to support now
+```
 
 
 
