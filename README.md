@@ -2,9 +2,61 @@ accidentially and not familar with github pull/merge request, original author pe
 
 you may still be able to visit original repo and looking for update.
 
-this library has no support email header build with "in-reply-to" & "references." so far
+this library (update & latest to version 1.1.5) has no support email header build with "in-reply-to" & "references." so far
 
-SD_MMC is not working.
+SD_MMC is not working, why ?
+
+![SD_MMC_not_supported.JPG](SD_MMC_not_supported.JPG)  
+
+
+
+\libraries\ESP_Mail_Client\src\wcs\esp32\ESP_Mail_HTTPClient32.h
+```
+#define ESP_MAIL_SD_FS ESP_Mail_DEFAULT_SD_FS
+```
+
+
+\libraries\ESP_Mail_Client\src\ESP_Mail_Client.cpp
+only SD card supported in SPI mode, no SD_MMC
+```
+bool ESP_Mail_Client::sdBegin(uint8_t sck, uint8_t miso, uint8_t mosi, uint8_t ss)
+{
+  _sck = sck;
+  _miso = miso;
+  _mosi = mosi;
+  _ss = ss;
+  _sdConfigSet = true;
+#if defined(ESP32)
+  SPI.begin(_sck, _miso, _mosi, _ss);   // only support SPI mode for SD CARD, no SD_MMC
+  return ESP_MAIL_SD_FS.begin(_ss, SPI);
+#elif defined(ESP8266)
+  return ESP_MAIL_SD_FS.begin(_ss);
+#endif
+}
+
+bool ESP_Mail_Client::sdBegin(void)
+{
+  _sdConfigSet = false;
+#if defined(ESP32)
+  return ESP_MAIL_SD_FS.begin();
+#elif defined(ESP8266)
+  return ESP_MAIL_SD_FS.begin(SD_CS_PIN);
+#endif
+}
+```
+
+
+\libraries\ESP_Mail_Client\src\ESP_Mail_FS.h
+```
+//define ESP_Mail_DEFAULT_SD_FS SD	// SPI mode SD card, works.
+#include <SD_MMC.h>
+#define ESP_Mail_DEFAULT_SD_FS SD_MMC //For ESP32 SDMMC, testing, not working, no code to support now
+```
+
+
+
+
+
 
 
 
@@ -37,7 +89,7 @@ Copyright (c) 2021 K. Suwatchai (Mobizt).
 * Support the content decodings e.g. base64, UTF-8, UTF-7, quoted-printable, ISO-8859-1 (latin1) and ISO-8859-11 (Thai).
 * Support many types of embedded contents e.g. inline images, attachments, parallel media attachments and RFC822 message.
 * Support full debuging.
-* Support flash memory and SD card for file storages. Can be changed in [**ESP_Mail_FS.h**](/src/ESP_Mail_FS.h).
+* Support flash memory and SD card for file storages. Can be changed in [**ESP_Mail_FS.h**](/src/ESP_Mail_FS.h). (SD_MMC is not supported yet, up to version 1.1.5 )
 * Support Ethernet (ESP32).
 * Customizable operating configurations (see the examples for the usages)
 
