@@ -1,4 +1,4 @@
-accidentially and not familar with github pull/merge request, original author blocked my git account and no longer able to comment and ask help/qeistion, perhaps get matt with. 
+accidentially and not familar with github pull/merge request, original author perhaps blocked my git account and no longer able to comment and/or ask help/qeistion, perhaps get matt with. 
 
 you may still be able to visit original repo and looking for update.
 
