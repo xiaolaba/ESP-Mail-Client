@@ -1,3 +1,15 @@
+accidentially and not familar with github pull/merge request, original author blocked my git account and no longer able to comment and ask help/qeistion, perhaps get matt with. 
+
+you may still be able to visit original repo and looking for update.
+
+this library has no support email header build with "in-reply-to" & "references." so far
+
+SD_MMC is not working.
+
+
+
+
+
 # Mail Client Arduino Library for ESP32 and ESP8266 v 1.1.3
 
 [![Join the chat at https://gitter.im/mobizt/ESP_Mail_Client](https://badges.gitter.im/mobizt/ESP_Mail_Client.svg)](https://gitter.im/mobizt/ESP_Mail_Client?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
