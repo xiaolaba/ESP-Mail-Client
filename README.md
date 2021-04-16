@@ -118,6 +118,50 @@ ESP_Mail_FS.h
 
 
 
+Send_Attachment_File.ino, omits/add following,
+```
+  Serial.println("Mounting SD Card SD_MMC mode used...");
+
+#if defined(ESP32)
+  //if (SD_MMC.begin()) // MailClient.sdBegin(14,2,15,13) for TTGO T8 v1.7 or 1.8
+
+// change ESP_Mail_FS.h as following,
+/*  
+  //define ESP_Mail_DEFAULT_SD_FS SD  // SPI mode SD card, works.
+  #include <SD_MMC.h>
+  #define ESP_Mail_DEFAULT_SD_FS SD_MMC //For ESP32 SDMMC, testing, not working, no code to support now
+*/
+  if ( MailClient.sdmmcBegin() ) // SD_MMC supportted, xiaolaba
+#elif defined(ESP8266)
+  if (SD.begin(15))
+#endif
+  {
+    // change SD.exists to SD_MMC.exists, following and change all SD.xxx incidents to the same SD_MMC.xxx
+    // xiaolaba
+    if (SD_MMC.exists("/orange.png"))   
+      SD_MMC.remove("/orange.png");
+    if (SD_MMC.exists("/bin1.dat"))
+      SD_MMC.remove("/bin1.dat");
+
+    Serial.println("Preparing SD file attachments...");
+
+    const char *orangeImg = "iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAoUlEQVR42u3RMQ0AMAgAsCFgftHLiQpsENJaaFT+fqwRQoQgRAhChCBECEKECBGCECEIEYIQIQgRghCECEGIEIQIQYgQhCBECEKEIEQIQoQgBCFCECIEIUIQIgQhCBGCECEIEYIQIQhBiBCECEGIEIQIQQhChCBECEKEIEQIQhAiBCFCECIEIUIQghAhCBGCECEIEYIQIUKEIEQIQoQg5LoBGi/oCaOpTXoAAAAASUVORK5CYII=";
+
+    File file = SD_MMC.open("/orange.png", FILE_WRITE);
+    file.print(orangeImg);
+    file.close();
+
+    file = SD_MMC.open("/bin1.dat", FILE_WRITE);
+
+    buf[0] = 'H';
+    buf[1] = 'E';
+    buf[2] = 'A';
+    buf[3] = 'D';
+    file.write(buf, 4);
+
+
+```
+
 
 
 # Mail Client Arduino Library for ESP32 and ESP8266 v 1.1.3
