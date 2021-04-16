@@ -4,7 +4,7 @@ you may still be able to visit original repo and looking for update or help/disc
 
 ### this library (update & latest to version 1.1.5) has no support email header build with "in-reply-to" & "references." so far
 
-### SD_MMC is not working, why ?
+### SD_MMC is not working, why ? and workaround
 
 ![SD_MMC_not_supported.JPG](SD_MMC_not_supported.JPG)  
 
@@ -161,6 +161,15 @@ Send_Attachment_File.ino, omits/add following,
 
 
 ```
+
+SD_MMC_supported, validation done.
+![SD_MMC_supported.JPG](SD_MMC_supported.JPG) 
+
+
+
+
+
+
 
 
 
