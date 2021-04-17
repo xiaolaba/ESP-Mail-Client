@@ -170,14 +170,14 @@ SD_MMC_supported, validation done.
 
 
 ### hardward also need to be tweaked before this trick will works  
-This SD card module, the design was only cope with SPI mode, it was slow.  
-check out the SD card socket specification and the pinout, DAT1 & DAT2 is not used but pulled up by A single resistor.
-hardward workaround, cut the trace to seprates DAT1 / DAT2, add a pull up resistor, connect the SD card to 
+This SD card module, the design was only cope with SPI mode, it was slow.   
+check out the SD card socket specification and the pinout, DAT1 & DAT2 is not used but pulled up by A single resistor.  
+hardward workaround, cut the trace to seprates DAT1 / DAT2, add a pull up resistor, connect the SD card to ESP32 SDIO slot2, uses extra 2 pins for DAT1 & DAT2  
 
 ![SD_card_module_not_support_SD_MMC_mode.jpg](SD_card_module_not_support_SD_MMC_mode.jpg)
-![MUP_M015-4_1.jpg](MUP_M015-4_1.jpg)
-![MUP_M015-4_2.jpg](MUP_M015-4_2.jpg)
-![MUP_M015-4_2.jpg](MUP_M015-4_3.jpg)
+![MUP_M015-4_1.jpg](MUP_M015-4_1.jpg)  
+![MUP_M015-4_2.jpg](MUP_M015-4_2.jpg)  
+![MUP_M015-4_2.jpg](MUP_M015-4_3.jpg)  
 
 ![SD_CARD_ESP32_pin_SD_MMC_connection.JPG](SD_CARD_ESP32_pin_SD_MMC_connection.JPG)
 
